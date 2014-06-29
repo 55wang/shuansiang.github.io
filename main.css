@@ -1,6 +1,6 @@
 body {
 	/*position: relative;*/
-	padding: 40px 80px;
+	padding: 10px 160px;
 	margin: 0;
 }
 
@@ -30,8 +30,9 @@ body {
 .level4 {
 	background-color: #FF0000;
 }
+
 .buttonPrimary {
-	padding: 5px 10px;
+	padding: 4px 8px;
 	background-color: #FFCC00;
 }
 
@@ -62,15 +63,39 @@ body {
 	border-bottom: none;
 }
 
+.budgetBoxValue {
+	float: right;
+}
+
+.budgetBoxButton {
+	float: right;
+	/*position: relative;
+	top: -5px;*/
+}
+
 .spentBox {
 	width: 50%;
 	float: left;
+	margin-bottom: 20px;
+}
+
+.spentBoxValue {
+	width: 80%;
+	float: right;
 }
 
 .overspentBox {
 	width: 50%;
 	float: left;
 	border-left: none;
+	margin-bottom: 20px;
+	/*position: relative;
+	top: -3px;*/
+}
+
+.overspentBoxValue {
+	width: 80%;
+	float: right;
 }
 
 .newEntryButton {
@@ -90,10 +115,26 @@ body {
 	z-index: 100;
 }
 
+.setBudgetPopup {
+	position: fixed;
+	top: 30%;
+	left: 20%;
+	right: 20%;
+	border: 1px solid #c4c4c4;
+	padding: 20px;
+	background-color: #FFCC00;
+	z-index: 100;
+}
+
+.setBudgetPopup h2 {
+	text-align: center;
+}
+
 .newEntryPopup h2 {
 	text-align: center;
 }
 
-.spentList {
-	list-style: none;
-}
+/*.historyBox {
+	clear: both;
+	border: 1px solid black;
+}*/

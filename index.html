@@ -9,8 +9,8 @@
 		<!-- <div class="backdrop">dfdf</div> -->
 		<h1 align="center">Budget Planner</h1>
 		<h3 align="center"> June 2014</h3>
+
 		<button type="button" class="buttonPrimary newEntryButton">New Entry</button>
-	
 
 		<table align="center" border="1" class="calenderTable">
 			<tr>
@@ -18,7 +18,7 @@
  		 		<th>Monday</th>
  		 		<th>Tuesday</th> 
   				<th>Wednesday</th>
-  				<th>Thrusday</th>
+  				<th>Thursday</th>
   				<th>Friday</th>
   				<th>Saturday</th>
 			</tr>
@@ -69,58 +69,227 @@
 			</tr>
 		</table>
 
+		<!--- budget + spent + overspent box -->
 		<div class="box">
 			<div class="subBox budgetBox">
-				<h3>
-					Budget 
-					<input type="text" placeholder="No budget yet" class="budgetInput" value="300"></input>
-					<button type="button" class="buttonPrimary budgetBoxButton">Submit</button>
-				</h3>
-				<div class="budgetBoxValue">
-				</div>
+				Budget
+				<div class="budgetBoxValue"></div>
+				<button type="button" class="buttonPrimary budgetBoxButton">Set Budget</button>
 			</div>
 			<div class="subBox spentBox">
 				Spent
-				<div class="spentBoxValue"
-				></div>
+				<div class="spentBoxValue"></div>
 			</div>
 			<div class="subBox overspentBox">
 				Overspent
-				<div class="overspentBoxValue">
+				<div class="overspentBoxValue"></div>
+			</div>
+		</div>
+	
+		<!-- history box to record entries -->
+		<div class="historyBox">
+			<div class="day1Box">
+				
+				<div class="day1BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day2Box">
+				
+				<div class="day2BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day3Box">
+				
+				<div class="day3BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day4Box">
+				
+				<div class="day5BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day5Box">
+				
+				<div class="day5BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day6Box">
+				
+				<div class="day6BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day7Box">
+				
+				<div class="day7BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day8Box">
+				
+				<div class="day8BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day9Box">
+				
+				<div class="day9BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day10Box">
+				
+				<div class="day10BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day11Box">
+				
+				<div class="day11BoxHistory">
+					
+				</div>
+			</div>
+			<div class="day12Box">
+
+				<div class="day12BoxHistory">
+
+				</div>
+			</div>
+			<div class="day13Box">
+
+				<div class="day13BoxHistory">
+
+				</div>
+			</div>
+			<div class="day14Box">
+
+				<div class="day14BoxHistory">
+
+				</div>
+			</div>
+			<div class="day15Box">
+
+				<div class="day15BoxHistory">
+
+				</div>
+			</div>
+			<div class="day16Box">
+
+				<div class="day16BoxHistory">
+
+				</div>
+			</div>
+			<div class="day17Box">
+
+				<div class="day17BoxHistory">
+
+				</div>
+			</div>
+			<div class="day18Box">
+
+				<div class="day18BoxHistory">
+
+				</div>
+			</div>
+			<div class="day19Box">
+
+				<div class="day19BoxHistory">
+
+				</div>
+			</div>
+			<div class="day20Box">
+
+				<div class="day20BoxHistory">
+
+				</div>
+			</div>
+			<div class="day21Box">
+
+				<div class="day21BoxHistory">
+
+				</div>
+			</div>
+			<div class="day22Box">
+
+				<div class="day22BoxHistory">
+
+				</div>
+			</div>
+			<div class="day23Box">
+
+				<div class="day23BoxHistory">
+
+				</div>
+			</div>
+			<div class="day24Box">
+
+				<div class="day24BoxHistory">
+
+				</div>
+			</div>
+			<div class="day25Box">
+
+				<div class="day25BoxHistory">
+
+				</div>
+			</div>
+			<div class="day26Box">
+
+				<div class="day26BoxHistory">
+
+				</div>
+			</div>
+			<div class="day27Box">
+
+				<div class="day27BoxHistory">
+
+				</div>
+			</div>
+			<div class="day28Box">
+
+				<div class="day28BoxHistory">
+
+				</div>
+			</div>
+			<div class="day29Box">
+
+				<div class="day29BoxHistory">
+
+				</div>
+			</div>
+			<div class="day30Box">
+
+				<div class="day30BoxHistory">
+
+				</div>
+			</div>
+			<div class="day31Box">
+
+				<div class="day31BoxHistory">
+
 				</div>
 			</div>
 		</div>
-		<!-- <div class="box">
-			<ul class="spentList">
-				<li>
-					<div class="subBox">
-						11 Jun 2014
-					</div>
-					<div class="subBox">
-						<div class="spentTitle">
-							Title
-						</div>
-						<div class="spentCategory">
-							Category
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="subBox">
-						11 Jun 2014
-					</div>
-					<div class="subBox">
-						<div class="spentTitle">
-							Title
-						</div>
-						<div class="spentCategory">
-							Category
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div> -->
 
+		<!-- popup box for setting budget -->
+		<div class="setBudgetPopup hide">
+			<h2>Set Budget</h2>
+			<div>
+				<span>Enter Budget:</span>
+				<input type="text" class="setBudgetPopupValue" placeholder="Your Amount"></input>
+			</div>
+			<div>
+			<button type="button" class="buttonPrimary buttonSetNewBudget">Set</button>
+			<button type="button" class="buttonPrimary buttonCancel">Cancel</button>
+			</div>	
+		</div>
+
+		<!-- popup box for new entry input -->
 		<div class="newEntryPopup hide">
 			<h2>New Entry</h2>
 			<div>
