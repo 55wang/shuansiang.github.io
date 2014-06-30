@@ -6,7 +6,7 @@
 	</head>
 
 	<body>
-		<!-- <div class="backdrop">dfdf</div> -->
+		<div class="overlay hide"></div>
 		<h1 align="center">Budget Planner</h1>
 		<h3 align="center"> June 2014</h3>
 
@@ -107,7 +107,7 @@
 
 		<!-- popup box for new entry input -->
 		<div class="newEntryPopup hide">
-			<h2>New Entry</h2>
+			<div class="newEntryPopupHeader">New Entry</div>
 			<div>
 				<span>Title:</span>
 				<input type="text" class="newEntryPopupTitle" placeholder="Title"></input>
@@ -130,7 +130,7 @@
 				<span>Date:</span>
 				<input type="text" class="newEntryPopupDate" placeholder="Date"></input>
 			</div>
-			<div>
+			<div class="newEntryPopupFooter">
 				<button type="button" class="buttonPrimary buttonSubmitNewEntry">Submit</button>
 				<button type="button" class="buttonPrimary buttonCancel">Cancel</button>
 			</div>

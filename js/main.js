@@ -2,6 +2,7 @@ $(window).load(function() {
 	if (localStorage.getItem("budget") == null) {
 		alert("Welcome! Please enter a budget to begin!");
 		$(".newEntryPopup").addClass("hide");
+		$(".overlay").addClass("hide");
 		$(".setBudgetPopup").removeClass("hide");
 	}
 	else {
@@ -131,6 +132,7 @@ $(".newEntryButton").click( function( e ) {
 	console.log("new entry button clicked");
 
 	$(".newEntryPopup").removeClass("hide");
+	$(".overlay").removeClass("hide");
 });
 
 // action for cancelling a new entry
@@ -138,6 +140,7 @@ $(".buttonCancel").click( function( e ) {
 	console.log("Cancel clicked.");
 
 	$(".newEntryPopup").addClass("hide");
+	$(".overlay").addClass("hide");
 });
 
 
@@ -171,6 +174,7 @@ $(".buttonSubmitNewEntry").click( function( e ) {
 	if (localStorage.getItem("budget") == null) {
 		alert("Welcome! Please enter a budget to begin!");
 		$(".newEntryPopup").addClass("hide");
+		$(".overlay").addClass("hide");
 		$(".setBudgetPopup").removeClass("hide");
 		return;
 	}
@@ -178,6 +182,7 @@ $(".buttonSubmitNewEntry").click( function( e ) {
 	// saving the calender entry grid to be changed
 	var currentDate = $(".calenderEntry")[Number(newDate)-1];
 	$(".newEntryPopup").addClass("hide");
+	$(".overlay").addClass("hide");
 
 	var currentSpent = localStorage.getItem("amountSpent");
 	var amountSpent = Number(currentSpent) + Number(newAmount);
