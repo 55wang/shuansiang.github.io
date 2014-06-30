@@ -89,6 +89,12 @@ $(".resetAllButton").click( function( e ) {
 	$(".spentBoxValue").html(null);
 	$(".overspentBoxValue").html(null);
 	$(".historyBox").html(null);
+
+	var spendArray = new Array(30);
+	for (var i=0; i<spendArray.length; i++) {
+		spendArray[i] = 0;
+	}
+	localStorage.setItem("spendArray", spendArray);
 })
 
 /********************** budget button actions *********************/
@@ -199,5 +205,6 @@ $(".buttonSubmitNewEntry").click( function( e ) {
 	modifySpendArray(newDate, newAmount);
 	refreshCalender();
 
-	$(".list").append("<li>Date: " + newDate + "/6/14, Title: " + newTitle + ", Category: " + newCategory + " Amount: " + newAmount + "</li>");
+	var listOfEntries = localStorage.getItem("historyBox");
+	$(".historyBox").append("Date: " + newDate + "/6/14, Title: " + newTitle + ", Category: " + newCategory + " Amount: " + newAmount + '\n');
 });
