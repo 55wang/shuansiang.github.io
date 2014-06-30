@@ -80,7 +80,6 @@ body {
 }
 
 .spentBoxValue {
-	width: 80%;
 	float: right;
 }
 
@@ -94,11 +93,16 @@ body {
 }
 
 .overspentBoxValue {
-	width: 80%;
 	float: right;
 }
 
 .newEntryButton {
+	float: right;
+	position: relative;
+	top: -10px;
+}
+
+.resetAllButton {
 	float: right;
 	position: relative;
 	top: -10px;
@@ -134,6 +138,9 @@ body {
 	text-align: center;
 }
 
+.list {
+	list-style: none;
+}
 /*.historyBox {
 	clear: both;
 	border: 1px solid black;

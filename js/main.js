@@ -20,6 +20,24 @@ $(window).load(function() {
 	else {
 		refreshCalender();
 	}
+
+	if (localStorage.getItem("amountSpent") == null) {
+		var amountSpent = 0;
+
+		localStorage.setItem("amountSpent", amountSpent);
+	}
+	else {
+		$(".spentBoxValue").html(localStorage["amountSpent"]);
+	}
+
+	if (localStorage.getItem("amountOverspent") == null) {
+		var amountOverspent = 0;
+
+		localStorage.setItem("amountOverspent", amountOverspent);
+	}
+	else {
+		$(".overspentBoxValue").html(localStorage["amountOverspent"]);
+	}
 });
 
 function modifySpendArray(day, value) {
@@ -40,7 +58,7 @@ function refreshCalender() {	// can put month as parameter
 	for (var i=0; i<spendArray.length; i++) {
 		var spend = spendArray[i];
 
-		if (Number(spend) <= budget/30 * 0.25 && spend > 0) {
+		if (Number(spend) <= budget /30 * 0.25 && spend > 0) {
 			$(calenderEntryArray[i]).removeClass("level1 level2 level3 level4").addClass("level1");
 		}
 		else if (Number(spend) > budget/30 * 0.25 && spend <= budget/30 * 0.5) {
@@ -54,6 +72,23 @@ function refreshCalender() {	// can put month as parameter
 		}
 	}
 }
+
+/********************** reset all button actions *********************/
+$(".resetAllButton").click( function( e ) {
+	console.log("reset all button cllicked");
+	
+	var calenderEntryArray = $(".calenderEntry");
+	for (var i=0; i<calenderEntryArray.length; i++) {
+		$(calenderEntryArray[i]).removeClass("level1 level2 level3 level4");
+	}
+
+	localStorage.clear();
+	$(".budgetBoxButton").removeClass("hide");
+	$(".budgetBoxValue").html(null);
+	$(".spentBoxValue").html(null);
+	$(".overspentBoxValue").html(null);
+	$(".historyBox").html(null);
+})
 
 /********************** budget button actions *********************/
 
@@ -76,6 +111,7 @@ $(".buttonSetNewBudget").click( function( e ) {
 	else {
 		$(".budgetBoxValue").html(budgetInput);
 		localStorage.setItem("budget", budgetInput);
+		budget = localStorage.getItem("budget");
 		$(".setBudgetPopup").addClass("hide");
 		$(".budgetBoxButton").addClass("hide");
 	}
@@ -132,22 +168,31 @@ $(".buttonSubmitNewEntry").click( function( e ) {
 	// assume date entry is a number representing day of that month
 	console.log("Input received.", newTitle, newCategory, newAmount, newDate);
 
+	if (localStorage.getItem("budget") == null) {
+		alert("Welcome! Please enter a budget to begin!");
+		$(".newEntryPopup").addClass("hide");
+		$(".setBudgetPopup").removeClass("hide");
+		return;
+	}
+
 	// saving the calender entry grid to be changed
 	var currentDate = $(".calenderEntry")[Number(newDate)-1];
 	$(".newEntryPopup").addClass("hide");
 
-	// recording the amount in spent box and making changes
-	var currentSpentValue = $(".spentBoxValue").html();
-	// if value already exist in currentSpentBox
-	if ($.isNumeric(currentSpentValue)) {
-		currentSpentValue = Number(currentSpentValue) + Number(newAmount);
-	}
-	// if currentSpentBox is empty
-	else {
-		currentSpentValue = newAmount;
+	var currentSpent = localStorage.getItem("amountSpent");
+	var amountSpent = Number(currentSpent) + Number(newAmount);
+
+	localStorage.setItem("amountSpent", amountSpent);
+	$(".spentBoxValue").html(localStorage["amountSpent"]);
+
+	if (localStorage.getItem("amountSpent") > localStorage.getItem("budget")) {
+		var amountOverspent = localStorage.getItem("amountSpent") - localStorage.getItem("budget");
+		localStorage.setItem("amountOverspent", amountOverspent);
+		$(".overspentBoxValue").html(localStorage["amountOverspent"]);
 	}
 
 	modifySpendArray(newDate, newAmount);
 	refreshCalender();
 
+	$(".list").append("<li>Date: " + newDate + "/6/14, Title: " + newTitle + ", Category: " + newCategory + " Amount: " + newAmount + "</li>");
 });
