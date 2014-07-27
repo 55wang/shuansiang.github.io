@@ -2,6 +2,7 @@ body {
 	/*position: relative;*/
 	padding: 10px 160px;
 	margin: 0;
+	background-image:url('bg.jpg');
 }
 
 .overlay {
@@ -17,9 +18,14 @@ body {
     color:white;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Tahoma";
+}
+
 table, th, td {
-	border: 1px solid #C4C4C4;
+	border: 1px solid #000000;
 	border-spacing: 0px;
+	background-color: #95a5a6;
 }
 
 .hide {
@@ -110,6 +116,7 @@ table, th, td {
 	width: 100%;
 	margin-top: 20px;
 	border-bottom: none;
+	background: linear-gradient(#6B8C00, #7B9C10);
 }
 
 .budgetBoxValue {
@@ -126,6 +133,7 @@ table, th, td {
 	width: 50%;
 	float: left;
 	margin-bottom: 20px;
+	background-color: blue;
 }
 
 .spentBoxValue {
@@ -139,6 +147,7 @@ table, th, td {
 	margin-bottom: 20px;
 	/*position: relative;
 	top: -3px;*/
+	background-color: red;
 }
 
 .overspentBoxValue {
@@ -216,6 +225,34 @@ table, th, td {
 
 .list {
 	list-style: none;
+}
+
+.spentItemListPopup {
+	position: fixed;
+	top: 30%;
+	left: 20%;
+	right: 20%;
+	border: 1px solid #c4c4c4;
+	padding: 20px;
+	background-color: #FFF;
+	z-index: 100;
+	border-radius: 5px;
+}
+
+.spentItemListPopupHeader {
+	font-size: 30px;
+	text-align: center;
+	border-bottom: 1px solid #C4C4C4;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	font-family: Helvetica;
+}
+
+.spentItemListPopupFooter {
+	text-align: center;
+	margin-top: 20px;
+	border-top: 1px solid #C4C4C4;
+	padding-top: 15px;
 }
 /*.historyBox {
 	clear: both;
