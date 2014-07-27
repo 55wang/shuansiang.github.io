@@ -39,6 +39,30 @@ $(window).load(function() {
 	else {
 		$(".overspentBoxValue").html(localStorage["amountOverspent"]);
 	}
+
+	if( localStorage.getItem("spentList") == null) {
+		var spentListArray = {
+			"Jan": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Feb": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Mar": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Apr": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"May": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Jun": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Jul": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Aug": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Sep": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Oct": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Nov": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+			"Dec": [ "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","" ],
+		};
+
+		localStorage.setItem( "spentListArray", spentListArray.toString() );
+	}
+
+	if( localStorage.getItem("currentMonth") == null ) {
+		localStorage.setItem("currentMonth") == "Jun";
+	}
+
 });
 
 function modifySpendArray(day, value) {
@@ -149,6 +173,12 @@ $(".buttonCancel").click( function( e ) {
 	$(".overlay").addClass("hide");
 });
 
+// action for viewing spent items in a day
+$(".calenderEntry").click( function( e ) {
+	console.log("Calender entry box clicked.");
+	$( e.target ).html();
+
+});
 
 // action for submitting a new entry
 $(".buttonSubmitNewEntry").click( function( e ) {
@@ -201,10 +231,39 @@ $(".buttonSubmitNewEntry").click( function( e ) {
 		localStorage.setItem("amountOverspent", amountOverspent);
 		$(".overspentBoxValue").html(localStorage["amountOverspent"]);
 	}
+	else {
+		$(".overspentBoxValue").html("0");
+	}
 
 	modifySpendArray(newDate, newAmount);
 	refreshCalender();
 
+	var spentListString = "<li>Date: " + newDate + "/6/14, Title: " + newTitle + ", Category: " + newCategory + " Amount: " + newAmount + '</li>';
 	var listOfEntries = localStorage.getItem("historyBox");
-	$(".historyBox").append("Date: " + newDate + "/6/14, Title: " + newTitle + ", Category: " + newCategory + " Amount: " + newAmount + '\n');
+	$(".historyBox .list").append("<li>Date: " + newDate + "/6/14, Title: " + newTitle + ", Category: " + newCategory + " Amount: " + newAmount + '</li>');
+	spentListArray[currentMonth][newDate+1] += spentListString;
+	console.log(spentListArray);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
