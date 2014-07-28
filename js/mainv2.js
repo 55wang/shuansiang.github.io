@@ -119,6 +119,7 @@ function initLocalStorage() {
 
 function resetApplication() {
 	localStorage.setItem( "hasData", false );
+	location.reload();
 	return;
 }
 
@@ -310,6 +311,7 @@ function modifySpendArray( month, day, title, category, amount ) {
 
 function refreshCalender() {
 	var index 						= 	0;
+	var totalSpendAmount 			= 	0;
 	var calenderEntryArray 			= 	$(".calenderEntry");
 	var currMonth 					= 	$(".monthSelection").val();
 
@@ -342,6 +344,8 @@ function refreshCalender() {
 		if( spendAmountRecordMonth[i] != null ) {
 			var spendAmount = Number( spendAmountRecordMonth[i] );
 
+			totalSpendAmount += spendAmount;
+
 			$( calenderEntryArray[i] ).html( index + 1 );
 
 			if( spendAmount > level0 && spendAmount <= level1 ) {
@@ -359,6 +363,16 @@ function refreshCalender() {
 
 			index++;
 		}
+	}
+
+	$(".budgetBoxValue").html( budgetMonth );
+	$(".spentBoxValue").html( totalSpendAmount );
+	
+	if( amountOverspentMonth < 0 ) {
+		$(".overspentBoxValue").html( 0 );
+	}
+	else {
+		$(".overspentBoxValue").html( amountOverspentMonth );
 	}
 }
 
