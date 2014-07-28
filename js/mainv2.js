@@ -122,6 +122,18 @@ function resetApplication() {
 	return;
 }
 
+function showSpendItemsPopup() {
+	$(".spentItemListPopup").removeClass("hide");
+	$(".overlay").removeClass("hide");
+	return;
+}
+
+function hideSpendItemsPopup() {
+	$(".spentItemListPopup").addClass("hide");
+	$(".overlay").addClass("hide");
+	return;
+}
+
 function showNewEntryPopup() {
 	$(".newEntryPopup").removeClass("hide");
 	$(".overlay").removeClass("hide");
@@ -282,7 +294,7 @@ function modifySpendArray( month, day, title, category, amount ) {
 	var currSpendRecordString 		= 	spendRecords[month][index];
 
 	var newRecordString 			= 	"<li>"
-										+ "Date: " + day + "-" + month + "-14, " 
+										+ "Date: " + day + "-" + month.toUpperCase() + "-14, " 
 										+ "Title: " + title + ", " 
 										+ "Category: " + category + ", " 
 										+ "Amount: " + amount + 
@@ -318,9 +330,6 @@ function refreshCalender() {
 	var spendAmountRecordMonth 		= 	spendAmountRecords[currMonth];
 	var amountOverspentMonth		= 	amountOverspent[currMonth];
 
-	console.log("spendRecordMonth : ", spendRecordMonth);
-	console.log("spendAmountRecordMonth : ", spendAmountRecordMonth);
-
 	for( var i=0; i<42; i++ ) {
 		var budget 		= Number( budgetMonth );
 		var level0 		= 0;
@@ -353,6 +362,30 @@ function refreshCalender() {
 	}
 }
 
+function showSpendRecord( e ) {
+	var day 		= e.target.innerText;
+
+	if( day == "" ) {
+		return;
+	}
+	
+	var currMonth 	= $(".monthSelection").val();
+	var index 		= getDayIndex( currMonth, Number( day ) );
+	var spendRecordsString 	= localStorage["spendRecords"];
+	var spendRecordsObject 	= JSON.parse( spendRecordsString );
+	var spendRecord 		= spendRecordsObject[currMonth][index];
+
+	if( spendRecord == "" ) {
+		$(".spentItemList").empty().html( "<li>No spend records for this day.</li>" );	
+	}
+	else {
+		$(".spentItemList").empty().html( spendRecord );	
+	}
+
+	showSpendItemsPopup();
+
+}
+
 /*******************************************************************************
 	EVENT HANDLERS HERE
 *******************************************************************************/
@@ -383,13 +416,18 @@ $(".buttonCancel").click( function( e ) {
 });
 
 $(".calenderEntry").click( function( e ) {
-
 	console.log( "Calender entry clicked" );
+	showSpendRecord( e );
 });
 
 $(".buttonSubmitNewEntry").click( function( e ) {
 	console.log( "Submit new entry clicked" );
 	recordNewEntry();
+});
+
+$(".closeSpentItemList").click( function( e ) {
+	console.log( "Close spent item list clicked" );
+	hideSpendItemsPopup();
 });
 
 $(".monthSelection").change( function( e ) {
