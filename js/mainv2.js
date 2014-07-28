@@ -337,12 +337,12 @@ function refreshCalender() {
 		var level2 		= budget / 30 * 0.5;
 		var level3 		= budget / 30 * 0.75;
 
-		$( calenderEntryArray[i] ).empty();
+		$( calenderEntryArray[i] ).empty().removeClass( 'level1 level2 level3 level4' );
 
 		if( spendAmountRecordMonth[i] != null ) {
 			var spendAmount = Number( spendAmountRecordMonth[i] );
 
-			$( calenderEntryArray[i] ).html( index + 1 ).removeClass( 'level1 level2 level3 level4' );
+			$( calenderEntryArray[i] ).html( index + 1 );
 
 			if( spendAmount > level0 && spendAmount <= level1 ) {
 				$( calenderEntryArray[i] ).addClass( 'level1' );
