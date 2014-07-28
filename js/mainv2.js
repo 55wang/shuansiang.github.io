@@ -411,8 +411,8 @@ $(".newEntryButton").click( function( e ) {
 });
 
 $(".buttonCancel").click( function( e ) {
-	
 	console.log( "Button cancel clicked" );
+	hideNewEntryPopup();
 });
 
 $(".calenderEntry").click( function( e ) {
