@@ -410,7 +410,7 @@ $(".newEntryButton").click( function( e ) {
 	showNewEntryPopup();
 });
 
-$(".buttonCancel").click( function( e ) {
+$(".buttonCancelNewEntry").click( function( e ) {
 	console.log( "Button cancel clicked" );
 	hideNewEntryPopup();
 });
