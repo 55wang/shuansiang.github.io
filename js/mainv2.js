@@ -1,3 +1,21 @@
+/*******************************************************************************
+
+======================
+Items in localStorage
+======================
+
+	1. hasData 				: 	Indicates if all data is still in use/valid.
+	2. budget 				: 	Stores budget by month.
+	3. amountOverspent 		: 	Stores overspend by month.
+	4. spendRecords 		: 	Stores individual records of spend on a per day basis.
+								Stored as a string of list(<li>) elements.
+	5. spendAmountRecords 	: 	Stores amount spent each day.
+								null indicates that day is not valid in that month.
+
+*******************************************************************************/
+
+
+
 $(window).load(function() {
 	init();
 });
@@ -16,22 +34,46 @@ function init() {
 	}
 	else {
 		$(".budgetBoxButton").addClass("hide");
-		$(".budgetBoxValue").html( localStorage["budget"] );
-		if( localStorage["amountOverspent"] > 0 ) {
-			$(".overspentBoxValue").html( localStorage["amountOverspent"] );
-		}
-		else {
-			$(".overspentBoxValue").html(0);
-		}
-		$(".spentBoxValue").html( localStorage["amountSpent"] );
+		$(".budgetBoxValue").html( 0 );
+		$(".overspentBoxValue").html( 0 );
+		$(".spentBoxValue").html( 0 );
+		refreshCalender();
 	}
-
-	refreshCalender();
 }
 
 function initLocalStorage() {
 
-	// Initialize blank array of records stored by month
+	// Initialize blank array of records
+	var budget = {
+		"jan" : 0,
+		"feb" : 0,
+		"mar" : 0,
+		"apr" : 0,
+		"may" : 0,
+		"jun" : 0,
+		"jul" : 0,
+		"aug" : 0,
+		"sep" : 0,
+		"oct" : 0,
+		"nov" : 0,
+		"dec" : 0
+	};
+
+	var amountOverspent = {
+		"jan" : 0,
+		"feb" : 0,
+		"mar" : 0,
+		"apr" : 0,
+		"may" : 0,
+		"jun" : 0,
+		"jul" : 0,
+		"aug" : 0,
+		"sep" : 0,
+		"oct" : 0,
+		"nov" : 0,
+		"dec" : 0
+	};
+
 	var spendRecords = {
 		"jan" : [ null, null, null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", null, null, null, null, null, null, null, null ],
 		"feb" : [ null, null, null, null, null, null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", null, null, null, null, null, null, null, null ],
@@ -62,12 +104,14 @@ function initLocalStorage() {
 		"dec" : [ null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, null, null, null, null, null ],
 	};
 
-	var spendRecordsString = JSON.stringify( spendRecords );
-	var spendAmountRecordsString = JSON.stringify( spendAmountRecords );
+	var spendRecordsString 			= JSON.stringify( spendRecords );
+	var spendAmountRecordsString 	= JSON.stringify( spendAmountRecords );
+	var amountOverspentString 		= JSON.stringify( amountOverspent );
 
 	localStorage.clear();
 	localStorage.setItem( "spendRecords", spendRecordsString );
 	localStorage.setItem( "spendAmountRecords", spendAmountRecordsString );
+	localStorage.setItem( "amountOverspent", amountOverspentString );
 	localStorage.setItem( "hasData", true );
 
 	return;
@@ -104,19 +148,55 @@ function hideBudgetBox() {
 }
 
 function setNewBudget() {
-	var budgetInput = $(".setBudgetPopupValue").val();
+	var budgetInput = Number( $(".setBudgetPopupValue").val() );
 
 	if( budgetInput === "" || !$.isNumeric(budgetInput))  {
 		alert("Not a valid input. Please try again.");
 		return;
 	}
 	else {
-		localStorage.setItem("budget", budgetInput);
-		$(".budgetBoxValue").html(budgetInput);
+		var budget = {
+			"jan" : budgetInput,
+			"feb" : budgetInput,
+			"mar" : budgetInput,
+			"apr" : budgetInput,
+			"may" : budgetInput,
+			"jun" : budgetInput,
+			"jul" : budgetInput,
+			"aug" : budgetInput,
+			"sep" : budgetInput,
+			"oct" : budgetInput,
+			"nov" : budgetInput,
+			"dec" : budgetInput
+		};
+
+		localStorage.setItem("budget", JSON.stringify(budget) );
+		$(".budgetBoxValue").html( budgetInput );
 		$(".spentBoxValue").html(0);
 		$(".overspentBoxValue").html(0);
 		hideBudgetBox();
+		refreshCalender();
 	}
+}
+
+// Due to presence of nulls in array, we need to find the actual day in the array without the nulls.
+function getDayIndex( month, day ) {
+	var index 				= 0;
+	var day 				= Number( day );
+	var spendRecordsString 	= localStorage.getItem( "spendRecords" );
+	var spendRecordsObject 	= JSON.parse( spendRecordsString );
+	var spendRecordsMonth 	= spendRecordsObject[month];
+
+	for( var i=0; i<42; i++ ) {
+		if( spendRecordsMonth[i] == null ) {
+			index++;
+		}
+		else {
+			i = 42;
+		}
+	}
+
+	return ( day - 1 + index );
 }
 
 function recordNewEntry() {
@@ -131,22 +211,48 @@ function recordNewEntry() {
 	// Date entry is a number representing day of that month
 	console.log("Input received.", currMonth, newTitle, newCategory, newAmount, newDate);
 
+	// Validate input
 	if( !isNewEntryValid( newTitle, newDate, newCategory, newAmount ) ) {
 		return;
 	}
 
 	hideNewEntryPopup();
 
-	var currentDate 	= $(".calenderEntry")[Number(newDate)-1];
-	var currentSpent 	= localStorage.getItem("amountSpent");
-	var amountSpent 	= Number(currentSpent) + Number(newAmount);
+	var dayIndex 		= getDayIndex( currMonth, newDate )
 
-	localStorage.setItem("amountSpent", amountSpent);
-	$(".spentBoxValue").html(localStorage["amountSpent"]);
+	var budgetString 	= localStorage.getItem( "budget" );
+	var budgetObject	= JSON.parse( budgetString );
+	var budget			= Number( budgetObject[currMonth] );
 
-	var amountOverspent = localStorage.getItem("amountSpent") - localStorage.getItem("budget");
-	localStorage.setItem("amountOverspent", amountOverspent);
-	$(".overspentBoxValue").html(localStorage["amountOverspent"]);
+	var spendAmountRecordsString 	= localStorage.getItem( "spendAmountRecords" );
+	var spendAmountRecordsObject 	= JSON.parse( spendAmountRecordsString );
+	var spendAmountRecord 			= Number( spendAmountRecordsObject[currMonth][dayIndex] );
+
+	var amountOverspentString 	= localStorage.getItem( "amountOverspent" );
+	var amountOverspentObject	= JSON.parse( amountOverspentString );
+	var amountOverspent 		= Number( amountOverspentObject[currMonth] );
+
+	spendAmountRecord 	= spendAmountRecord + Number( newAmount );
+	budget 				= budget - spendAmountRecord;
+	amountOverspent 	= spendAmountRecord - budget;
+
+	$(".spentBoxValue").html( spendAmountRecord );
+	$(".budgetBoxValue").html( budget );
+
+	if( amountOverspent < 0 ) {
+		$(".overspentBoxValue").html( 0 );
+	}
+	else {
+		$(".overspentBoxValue").html( amountOverspent );
+	}
+
+	spendAmountRecordsObject[currMonth][dayIndex] 	= Number( spendAmountRecord );
+	amountOverspentObject[currMonth] 				= Number( amountOverspent );
+	budgetObject[currMonth]							= Number( budget );
+
+	localStorage.setItem( "spendAmountRecords", JSON.stringify( spendAmountRecordsObject ) );
+	localStorage.setItem( "amountOverspent", JSON.stringify( amountOverspentObject ) );
+	localStorage.setItem( "budget", JSON.stringify( budgetObject ) );
 
 	modifySpendArray( currMonth, newDate, newTitle, newCategory, newAmount );
 }
@@ -170,12 +276,10 @@ function isNewEntryValid( title, date, category, amount ) {
 }
 
 function modifySpendArray( month, day, title, category, amount ) {
-	var index 						= 	0;
+	var index 						= 	getDayIndex( month, day );
 	var spendRecordsString 			= 	localStorage["spendRecords"];
 	var spendRecords 				= 	JSON.parse( spendRecordsString );
-
-	var spendAmountRecordsString 	= 	localStorage["spendAmountRecords"];
-	var spendAmountRecords 			= 	JSON.parse( spendAmountRecordsString );
+	var currSpendRecordString 		= 	spendRecords[month][index];
 
 	var newRecordString 			= 	"<li>"
 										+ "Date: " + day + "-" + month + "-14, " 
@@ -184,44 +288,41 @@ function modifySpendArray( month, day, title, category, amount ) {
 										+ "Amount: " + amount + 
 										"</li>"
 
-	var currSpendRecordString 		= spendRecords[month][day-1];
-	var currSpendAmountRecord 		= Number(spendAmountRecords[month][day-1]);
 
-	// Due to presence of nulls in array, we need to find the actual day in the array without the nulls.
-	for( var i=0; i<42; i++ ) {
-		if( spendRecords[month][i] == null ) {
-			index++;
-		}
-		else {
-			i = 42;
-		}
-	}
-
-	spendRecords[month][ day - 1 + index ] 		= currSpendRecordString + newRecordString;
-	spendAmountRecords[month][ day - 1 + index ]= Number(currSpendAmountRecord) + Number(amount);
+	spendRecords[month][index] 		= currSpendRecordString + newRecordString;
 
 	localStorage.setItem( "spendRecords", JSON.stringify( spendRecords ) );
-	localStorage.setItem( "spendAmountRecords", JSON.stringify( spendAmountRecords ) );
+
+	refreshCalender();
 }
 
 function refreshCalender() {
 	var index 						= 	0;
 	var calenderEntryArray 			= 	$(".calenderEntry");
 	var currMonth 					= 	$(".monthSelection").val();
+
 	var spendRecordsString 			= 	localStorage["spendRecords"];
-	var spendAmountRecordsString 	= 	localStorage["spendAmountRecords"];
 	var spendRecords 				= 	JSON.parse( spendRecordsString );
+
+	var spendAmountRecordsString 	= 	localStorage["spendAmountRecords"];
 	var spendAmountRecords 			= 	JSON.parse( spendAmountRecordsString );
+
+	var amountOverspentString 		= 	localStorage["amountOverspent"];
+	var amountOverspent 			= 	JSON.parse( amountOverspentString );
+
+	var budgetString 				= 	localStorage["budget"];
+	var budget 						= 	JSON.parse( budgetString );
+
+	var budgetMonth 				= 	budget[currMonth];
 	var spendRecordMonth 			= 	spendRecords[currMonth];
 	var spendAmountRecordMonth 		= 	spendAmountRecords[currMonth];
-	var budgetPerDay 				= 	
+	var amountOverspentMonth		= 	amountOverspent[currMonth];
 
 	console.log("spendRecordMonth : ", spendRecordMonth);
 	console.log("spendAmountRecordMonth : ", spendAmountRecordMonth);
 
-	for( var i=0, iLen=spendAmountRecordMonth.length; i<iLen; i++ ) {
-		var spendAmount = Number( spendAmountRecordMonth[i] );
-		var budget 		= Number( localStorage.getItem("budget") );
+	for( var i=0; i<42; i++ ) {
+		var budget 		= Number( budgetMonth );
 		var level0 		= 0;
 		var level1 		= budget / 30 * 0.25;
 		var level2 		= budget / 30 * 0.5;
@@ -229,7 +330,9 @@ function refreshCalender() {
 
 		$( calenderEntryArray[i] ).empty();
 
-		if( spendAmount != null ) {
+		if( spendAmountRecordMonth[i] != null ) {
+			var spendAmount = Number( spendAmountRecordMonth[i] );
+
 			$( calenderEntryArray[i] ).html( index + 1 ).removeClass( 'level1 level2 level3 level4' );
 
 			if( spendAmount > level0 && spendAmount <= level1 ) {
@@ -275,10 +378,12 @@ $(".newEntryButton").click( function( e ) {
 });
 
 $(".buttonCancel").click( function( e ) {
+	
 	console.log( "Button cancel clicked" );
 });
 
 $(".calenderEntry").click( function( e ) {
+
 	console.log( "Calender entry clicked" );
 });
 
