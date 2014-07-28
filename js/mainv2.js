@@ -119,6 +119,7 @@ function initLocalStorage() {
 
 function resetApplication() {
 	localStorage.setItem( "hasData", false );
+	refreshCalender();
 	location.reload();
 	return;
 }
@@ -151,6 +152,7 @@ function hideNewEntryPopup() {
 
 function showBudgetBox() {
 	$(".setBudgetPopup").removeClass("hide");
+	$(".overlay").removeClass("hide");
 	return;
 }
 
@@ -158,6 +160,7 @@ function hideBudgetBox() {
 	console.log("Function hide budget box");
 	$(".setBudgetPopup").addClass("hide");
 	$(".budgetBoxButton").addClass("hide");
+	$(".overlay").addClass("hide");
 }
 
 function setNewBudget() {
@@ -246,8 +249,8 @@ function recordNewEntry() {
 	var amountOverspent 		= Number( amountOverspentObject[currMonth] );
 
 	spendAmountRecord 	= spendAmountRecord + Number( newAmount );
-	budget 				= budget - spendAmountRecord;
 	amountOverspent 	= spendAmountRecord - budget;
+	budget 				= budget - spendAmountRecord;
 
 	$(".spentBoxValue").html( spendAmountRecord );
 	$(".budgetBoxValue").html( budget );
